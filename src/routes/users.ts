@@ -6,13 +6,17 @@ import { knex } from '../database'
 export async function usersRoutes(app: FastifyInstance) {
     app.addHook('preHandler', async (request) => {
         console.log(`[${request.method} ${request.url}]`)
-      })
+    })
     
-    app.get('/', async(request) => {
+    app.get('/', async (request) => {
         const users = await knex('users')
-          .select()
+            .select()
         
         return { users }
     })
-
 }
+
+// - Nome
+// - Descrição
+// - Data e Hora
+// - Está dentro ou não da dieta
