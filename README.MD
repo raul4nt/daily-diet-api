@@ -3,15 +3,15 @@
 #### Requisitos Funcionais (RF)
 
 - [ ] O usuário deve poder criar um novo usuário;
-- [ ] O usuário deve poder registrar uma refeição com as seguintes informações:
+- [x] O usuário deve poder registrar uma refeição com as seguintes informações:
   - Nome
   - Descrição
   - Data e Hora
   - Está dentro ou não da dieta
-- [ ] O usuário deve poder editar uma refeição, alterando qualquer um dos dados acima;
-- [ ] O usuário deve poder apagar uma refeição;
+- [x] O usuário deve poder editar uma refeição, alterando qualquer um dos dados acima;
+- [x] O usuário deve poder apagar uma refeição;
 - [ ] O usuário deve poder listar todas as refeições registradas;
-- [ ] O usuário deve poder visualizar uma única refeição;
+- [x] O usuário deve poder visualizar uma única refeição;
 - [ ] O usuário deve poder recuperar as métricas da sua dieta, incluindo:
   - Quantidade total de refeições registradas;
   - Quantidade total de refeições dentro da dieta;

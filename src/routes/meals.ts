@@ -66,7 +66,7 @@ export async function mealsRoutes(app: FastifyInstance) {
         .first()
 
         if (!meal) {
-            return reply.status(404).send()
+            return reply.status(404).send({ error: 'Id not found.' })
         }
 
         return { meal }
@@ -85,7 +85,7 @@ export async function mealsRoutes(app: FastifyInstance) {
         .first()
 
         if (!meal) {
-            return reply.status(404).send()
+            return reply.status(404).send({ error: 'Id not found.' })
         }
 
         const deleteMeal = await knex('meals')
@@ -101,6 +101,16 @@ export async function mealsRoutes(app: FastifyInstance) {
 // - Data e Hora
 // - Está dentro ou não da dieta
 
+        const { id } = request.params
+
+        const meal = await knex('meals')
+        .select()
+        .where('id', id)
+        .first()
+
+        if (!meal) {
+            return reply.status(404).send({ error: 'Id not found.' })
+        }
 
         const editTransactionBodySchema = z.object({
             name: z.string(),
@@ -110,6 +120,32 @@ export async function mealsRoutes(app: FastifyInstance) {
             isInDiet: z.boolean(),
 
         })
+
+        const { name, description, date, time, isInDiet } = editTransactionBodySchema.parse(
+            request.body,
+        )
+
+        // const meal = await knex('meals')
+        // .select()
+        // .where('id', id)
+        // .first()
+
+        const editMeal = await knex('meals')
+        .where('id', id)
+        .update({
+            name,
+            description,
+            date,
+            time,
+            isInDiet
+        })
+        
+        return reply.status(204).send()
+
+
+
+
+
 
     })
 }
