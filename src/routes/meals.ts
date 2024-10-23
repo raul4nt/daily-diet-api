@@ -13,8 +13,15 @@ export async function mealsRoutes(app: FastifyInstance) {
     app.get('/', {
         preHandler: [authenticateToken],
     },  
+
     async (request) => {
-        const meals = await knex('meals').select();
+        
+        const userId = request.user.id;
+
+        const meals = await knex('meals')
+            .select()
+            .where('user_id', userId)
+            
 
         return { meals };
     });
@@ -50,9 +57,11 @@ export async function mealsRoutes(app: FastifyInstance) {
 
         const formattedTime = dayjs().set('hour', hours).set('minute', minutes).set('second', 0).format('HH:mm:ss')
 
+        const userId = request.user.id;
+
         await knex('meals').insert({
             id: randomUUID(),
-            user_id: randomUUID(),
+            user_id: userId,
             name,
             description,
             date: formattedDate,
@@ -70,13 +79,18 @@ export async function mealsRoutes(app: FastifyInstance) {
         
         const { id } = request.params
 
+        const userId = request.user.id;
+
         const meal = await knex('meals')
-        .select()
-        .where('id', id)
-        .first()
+            .select()
+            .where({
+                id: id,
+                user_id: userId
+            })
+            .first();
 
         if (!meal) {
-            return reply.status(404).send({ error: 'Id not found.' })
+            return reply.status(404).send({ error: 'Meal not found.' })
         }
 
         return { meal }
@@ -92,13 +106,18 @@ export async function mealsRoutes(app: FastifyInstance) {
         
         const { id } = request.params
 
+        const userId = request.user.id;
+
         const meal = await knex('meals')
-        .select()
-        .where('id', id)
-        .first()
+            .select()
+            .where({
+                id: id,
+                user_id: userId
+            })
+            .first();
 
         if (!meal) {
-            return reply.status(404).send({ error: 'Id not found.' })
+            return reply.status(404).send({ error: 'Meal not found.' })
         }
 
         const deleteMeal = await knex('meals')
@@ -115,13 +134,18 @@ export async function mealsRoutes(app: FastifyInstance) {
 
         const { id } = request.params
 
+        const userId = request.user.id;
+
         const meal = await knex('meals')
-        .select()
-        .where('id', id)
-        .first()
+            .select()
+            .where({
+                id: id,
+                user_id: userId
+            })
+            .first();
 
         if (!meal) {
-            return reply.status(404).send({ error: 'Id not found.' })
+            return reply.status(404).send({ error: 'Meal not found.' })
         }
 
         const editTransactionBodySchema = z.object({
