@@ -55,4 +55,63 @@ export async function mealsRoutes(app: FastifyInstance) {
 
         return reply.status(201).send()
     });
+
+    app.get('/:id', async (request, reply) => {
+        
+        const { id } = request.params
+
+        const meal = await knex('meals')
+        .select()
+        .where('id', id)
+        .first()
+
+        if (!meal) {
+            return reply.status(404).send()
+        }
+
+        return { meal }
+
+
+
+    })
+
+    app.delete('/:id', async (request, reply) => {
+        
+        const { id } = request.params
+
+        const meal = await knex('meals')
+        .select()
+        .where('id', id)
+        .first()
+
+        if (!meal) {
+            return reply.status(404).send()
+        }
+
+        const deleteMeal = await knex('meals')
+        .delete()
+        .where('id', id)
+
+        reply.status(204).send();
+    })
+
+    app.put('/:id', async (request, reply) => {
+//         - Nome
+// - Descrição
+// - Data e Hora
+// - Está dentro ou não da dieta
+
+
+        const editTransactionBodySchema = z.object({
+            name: z.string(),
+            description: z.string(),
+            date: z.string(),
+            time: z.string(),
+            isInDiet: z.boolean(),
+
+        })
+
+    })
 }
+
+// CORRIGIR DATES - FORMATAÇÃO
