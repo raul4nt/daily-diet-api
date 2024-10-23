@@ -1,10 +1,11 @@
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
+import dayjs from 'dayjs';
 import { randomUUID } from 'node:crypto'
 import { knex } from '../database'
 import bcrypt from 'bcryptjs';
 import { authenticateToken } from '../middlewares/jwtAuth';
-import { totalmem } from 'node:os';
+
 
 
 export async function usersRoutes(app: FastifyInstance) {
@@ -66,10 +67,37 @@ export async function usersRoutes(app: FastifyInstance) {
             return reply.status(404).send({ error: "You don't have any meals registered yet!" })
         }
 
-        const orderedMeals = await knex('meals')
-            .select('isInDiet', 'date')
 
-        checkMetrics.inDietMealsPercentage = (checkMetrics.countInDiet /  checkMetrics.totalMeals) * 100
+        const orderedMeals = await knex('meals')
+            .select('isInDiet', 'mealDate')
+            .where('user_id', userId)
+            .orderBy('mealDate', 'asc')
+            // asc = do menor para o maior(tem o desc tb que é o contrario)
+        
+        let maxSequence = 0
+        
+        let currentSequence = 0
+        
+        
+
+        orderedMeals.forEach(meal => {
+
+            if (meal.isInDiet) {
+                currentSequence++
+                maxSequence = Math.max(maxSequence, currentSequence)
+                // checa o maior valor entre os dois 
+
+            } else {
+                
+                currentSequence = 0
+            }
+        })
+
+        
+
+        checkMetrics.inDietMealsPercentage = Math.round((checkMetrics.countInDiet /  checkMetrics.totalMeals) * 100)
+
+        checkMetrics.maxInDietMealsSequence = maxSequence
 
         return reply.send({checkMetrics});
 
