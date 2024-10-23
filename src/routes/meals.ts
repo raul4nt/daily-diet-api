@@ -33,29 +33,22 @@ export async function mealsRoutes(app: FastifyInstance) {
         const createMealBodySchema = z.object({
             name: z.string(),
             description: z.string(),
-            date: z.string(),
-            time: z.string(),
-            isInDiet: z.boolean(),
+            mealDate : z.string(),
+            isInDiet: z.boolean()
         })
 
-        const { name, description, date, time, isInDiet } = createMealBodySchema.parse(
+        const { name, description, mealDate, isInDiet } = createMealBodySchema.parse(
             request.body
         )
 
-        const dateFromReq = dayjs(date);
+        const mealDateFromReq = dayjs(mealDate);
 
-        if (!dateFromReq.isValid()) {
-            return reply.status(400).send({ error: 'Invalid date format. Use YYYY-MM-DD.' })
+        if (!mealDateFromReq.isValid()) {
+            return reply.status(400).send({ error: 'Invalid date format. Use YYYY-MM-DD HH:mm.' })
         }
 
-        const formattedDate = dateFromReq.format('YYYY-MM-DD')
+        const formattedMealDate = mealDateFromReq.format('YYYY-MM-DD HH:mm:ss')
 
-        const [hours, minutes] = time.split(':').map(Number);
-        if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
-            return reply.status(400).send({ error: 'Invalid time format. Use HH:MM.' })
-        }
-
-        const formattedTime = dayjs().set('hour', hours).set('minute', minutes).set('second', 0).format('HH:mm:ss')
 
         const userId = request.user.id;
 
@@ -64,8 +57,7 @@ export async function mealsRoutes(app: FastifyInstance) {
             user_id: userId,
             name,
             description,
-            date: formattedDate,
-            time : formattedTime,
+            mealDate: formattedMealDate,
             isInDiet,
         })
 
@@ -120,7 +112,7 @@ export async function mealsRoutes(app: FastifyInstance) {
             return reply.status(404).send({ error: 'Meal not found.' })
         }
 
-        const deleteMeal = await knex('meals')
+        await knex('meals')
         .delete()
         .where('id', id)
 
@@ -151,28 +143,29 @@ export async function mealsRoutes(app: FastifyInstance) {
         const editTransactionBodySchema = z.object({
             name: z.string(),
             description: z.string(),
-            date: z.string(),
-            time: z.string(),
+            mealDate: z.string(),
             isInDiet: z.boolean(),
 
         })
 
-        const { name, description, date, time, isInDiet } = editTransactionBodySchema.parse(
+        const { name, description, mealDate, isInDiet } = editTransactionBodySchema.parse(
             request.body,
         )
 
-        // const meal = await knex('meals')
-        // .select()
-        // .where('id', id)
-        // .first()
+        const mealDateFromReq = dayjs(mealDate);
 
-        const editMeal = await knex('meals')
+        if (!mealDateFromReq.isValid()) {
+            return reply.status(400).send({ error: 'Invalid date format. Use YYYY-MM-DD HH:mm.' });
+        }
+
+        const formattedMealDate = mealDateFromReq.format('YYYY-MM-DD HH:mm:ss');
+
+        await knex('meals')
         .where('id', id)
         .update({
             name,
             description,
-            date,
-            time,
+            mealDate: formattedMealDate,
             isInDiet
         })
         
