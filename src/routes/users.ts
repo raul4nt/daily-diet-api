@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { knex } from '../database'
 import bcrypt from 'bcryptjs';
 
+
 export async function usersRoutes(app: FastifyInstance) {
     app.addHook('preHandler', async (request) => {
         console.log(`[${request.method} ${request.url}]`)
@@ -40,25 +41,6 @@ export async function usersRoutes(app: FastifyInstance) {
 
         return reply.status(201).send()
     });
-
-    app.post('/login', async (request, reply) => {
-        const loginBodySchema = z.object({
-            email: z.string(),
-            password: z.string().min(6)
-        })
-
-        const { email, password } = loginBodySchema.parse(
-            request.body
-        )
-        
-        const userExists = await knex('users')
-        .where('email', email)
-        .first()
-
-        if (!userExists) {
-            return reply.statusCode(404).send({ error: 'Email not found' })
-        }
-    })
 
 }
 

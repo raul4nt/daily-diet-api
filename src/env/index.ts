@@ -22,6 +22,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3333),
   // se tiver uma porta, ok, usa a que tem
   // se não tiver, vai usar o valor como 3333(valor default)
+  JWT_SECRET: z.string()
 })
 
 // o esquema exige que exista uma chave chamada DATABASE_URL e
@@ -36,7 +37,6 @@ export const _env = envSchema.safeParse(process.env)
 
 if (_env.success === false) {
   console.error('Invalid environment variables!', _env.error?.format())
-
   throw new Error('Invalid environment variables!')
 }
 

@@ -3,19 +3,26 @@ import dayjs from 'dayjs';
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
 import { knex } from '../database';
+import { authenticateToken } from '../middlewares/jwtAuth';
 
 export async function mealsRoutes(app: FastifyInstance) {
     app.addHook('preHandler', async (request) => {
         console.log(`[${request.method} ${request.url}]`);
     });
     
-    app.get('/', async (request) => {
+    app.get('/', {
+        preHandler: [authenticateToken],
+    },  
+    async (request) => {
         const meals = await knex('meals').select();
 
         return { meals };
     });
 
-    app.post('/', async (request, reply) => {
+    app.post('/', {
+        preHandler: [authenticateToken],
+    }, 
+    async (request, reply) => {
         const createMealBodySchema = z.object({
             name: z.string(),
             description: z.string(),
@@ -56,7 +63,10 @@ export async function mealsRoutes(app: FastifyInstance) {
         return reply.status(201).send()
     });
 
-    app.get('/:id', async (request, reply) => {
+    app.get('/:id', {
+        preHandler: [authenticateToken],
+    },  
+    async (request, reply) => {
         
         const { id } = request.params
 
@@ -75,7 +85,10 @@ export async function mealsRoutes(app: FastifyInstance) {
 
     })
 
-    app.delete('/:id', async (request, reply) => {
+    app.delete('/:id', {
+        preHandler: [authenticateToken],
+    }, 
+    async (request, reply) => {
         
         const { id } = request.params
 
@@ -95,11 +108,10 @@ export async function mealsRoutes(app: FastifyInstance) {
         reply.status(204).send();
     })
 
-    app.put('/:id', async (request, reply) => {
-//         - Nome
-// - Descrição
-// - Data e Hora
-// - Está dentro ou não da dieta
+    app.put('/:id', {
+        preHandler: [authenticateToken],
+    }, 
+    async (request, reply) => {
 
         const { id } = request.params
 
