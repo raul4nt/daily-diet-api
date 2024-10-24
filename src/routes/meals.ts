@@ -1,9 +1,13 @@
-import { FastifyInstance } from 'fastify'; 
+import { FastifyInstance, FastifyRequest } from 'fastify'; 
 import dayjs from 'dayjs';
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
 import { knex } from '../database';
 import { authenticateToken } from '../middlewares/jwtAuth';
+
+interface ParamsType {
+    id: string;
+}
 
 export async function mealsRoutes(app: FastifyInstance) {
     app.addHook('preHandler', async (request) => {
@@ -124,8 +128,9 @@ export async function mealsRoutes(app: FastifyInstance) {
     }, 
     async (request, reply) => {
 
+        
         const { id } = request.params
-
+        
         const userId = request.user.id;
 
         const meal = await knex('meals')
@@ -179,4 +184,3 @@ export async function mealsRoutes(app: FastifyInstance) {
     })
 }
 
-// CORRIGIR DATES - FORMATAÇÃO

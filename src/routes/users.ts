@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify'
+import { CheckMetrics, FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import dayjs from 'dayjs';
 import { randomUUID } from 'node:crypto'
@@ -55,7 +55,8 @@ export async function usersRoutes(app: FastifyInstance) {
                 totalMeals: knex.raw('count(*)')
             })
             .where('user_id', userId)
-            .first();
+            .first() as CheckMetrics;
+            // adicionando afirmação de tipo definido no fastify.ds.ts
            
             // exemplo de consulta sql pra ilustrar:
             // CASE
@@ -110,13 +111,3 @@ export async function usersRoutes(app: FastifyInstance) {
 
 }
 
-
-// - Deve ser possível recuperar as métricas de um usuário
-//     - Quantidade total de refeições registradas
-//     - Quantidade total de refeições dentro da dieta
-//     - Quantidade total de refeições fora da dieta
-
-
-
-
-//     - Melhor sequência de refeições dentro da dieta
