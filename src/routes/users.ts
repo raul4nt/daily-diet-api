@@ -100,7 +100,8 @@ export async function usersRoutes(app: FastifyInstance) {
 
         checkMetrics.maxInDietMealsSequence = maxSequence
 
-        return reply.send({checkMetrics});
+        return reply.code(200).send({ checkMetrics });
+
 
         
                 
