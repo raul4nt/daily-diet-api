@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import { env } from '../src/env';
 
 import { app } from '../src/app'
-import { string } from 'zod';
 
 
 const SECRET_KEY = env.JWT_SECRET
@@ -44,7 +43,6 @@ describe('Meals routes', () => {
       })
       .expect(201)
 
-    //   const token = jwt.sign({ id: user.id }, env.JWT_SECRET, { expiresIn: '1h' });
   })
 
   it('should be able to list all meals', async () => {
@@ -69,8 +67,6 @@ describe('Meals routes', () => {
         description: 'Meal description',
         mealDate: '2024-10-22 22:37:00',
         isInDiet: 1,
-        // id: string,
-        // user_id: string
 
       }),
     ])
@@ -98,7 +94,6 @@ describe('Meals routes', () => {
       .get(`/meals/${mealId}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-    console.log(getMealResponse)
 
     expect(getMealResponse.body.meal).toEqual(
       expect.objectContaining({
