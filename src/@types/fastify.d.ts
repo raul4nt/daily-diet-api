@@ -2,9 +2,9 @@ import 'fastify'
 
 declare module 'fastify' {
   interface FastifyRequest {
-    user?: any // Tente definir um tipo mais específico para user
+    user?: any //
     params: {
-      id: string // Adicione a interface Params aqui diretamente
+      id: string //
     }
   }
 
@@ -12,7 +12,7 @@ declare module 'fastify' {
     countInDiet: number
     countNotInDiet: number
     totalMeals: number
-    inDietMealsPercentage?: number // Opcional
-    maxInDietMealsSequence?: number // Opcional
+    inDietMealsPercentage?: number
+    maxInDietMealsSequence?: number
   }
 }

@@ -1,13 +1,9 @@
-import { FastifyInstance, FastifyRequest } from 'fastify'
+import { FastifyInstance } from 'fastify'
 import dayjs from 'dayjs'
 import { z } from 'zod'
 import { randomUUID } from 'node:crypto'
 import { knex } from '../database'
 import { authenticateToken } from '../middlewares/jwtAuth'
-
-interface ParamsType {
-  id: string
-}
 
 export async function mealsRoutes(app: FastifyInstance) {
   app.addHook('preHandler', async (request) => {

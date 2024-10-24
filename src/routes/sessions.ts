@@ -1,7 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { env } from '../env'
-import { randomUUID } from 'node:crypto'
 import { knex } from '../database'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
@@ -36,6 +35,4 @@ export async function sessionsRoutes(app: FastifyInstance) {
 
     return reply.status(200).send({ token })
   })
-
-
 }

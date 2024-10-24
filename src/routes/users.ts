@@ -1,6 +1,5 @@
 import { CheckMetrics, FastifyInstance } from 'fastify'
 import { z } from 'zod'
-import dayjs from 'dayjs'
 import { randomUUID } from 'node:crypto'
 import { knex } from '../database'
 import bcrypt from 'bcryptjs'
