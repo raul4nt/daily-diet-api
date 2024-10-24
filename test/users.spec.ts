@@ -14,7 +14,6 @@ const generateToken = (userId) => {
 }
 
 describe('Users routes', () => {
-
   beforeAll(async () => {
     await app.ready()
   })
@@ -31,7 +30,7 @@ describe('Users routes', () => {
   it('should be able to create a new user', async () => {
     await request(app.server)
       .post('/users')
-    //   .set('Authorization', `Bearer ${token}`)
+      //   .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'New user',
         email: 'newuser@mail.com',
@@ -41,8 +40,8 @@ describe('Users routes', () => {
   })
 
   it('should be able to return user metrics', async () => {
-    let token = generateToken(USER_ID);
-  
+    const token = generateToken(USER_ID)
+
     await request(app.server)
       .post('/meals')
       .set('Authorization', `Bearer ${token}`)
@@ -52,8 +51,8 @@ describe('Users routes', () => {
         mealDate: '2024-10-22 22:37',
         isInDiet: true,
       })
-      .expect(201);
-    
+      .expect(201)
+
     await request(app.server)
       .post('/meals')
       .set('Authorization', `Bearer ${token}`)
@@ -63,28 +62,21 @@ describe('Users routes', () => {
         mealDate: '2024-10-24 13:37',
         isInDiet: true,
       })
-      .expect(201);
-  
+      .expect(201)
+
     const checkMetricsResponse = await request(app.server) // Use await aqui
       .get('/users/metrics')
       .set('Authorization', `Bearer ${token}`)
-      .expect(200);
-  
+      .expect(200)
+
     expect(checkMetricsResponse.body.checkMetrics).toEqual(
       expect.objectContaining({
         countInDiet: 2,
         countNotInDiet: 0,
         totalMeals: 2,
         inDietMealsPercentage: 100,
-        maxInDietMealsSequence: 2
-      })
-    ); 
-  });
-  
-    
-
-
-
+        maxInDietMealsSequence: 2,
+      }),
+    )
   })
-
-
+})

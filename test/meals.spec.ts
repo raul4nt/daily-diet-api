@@ -1,22 +1,21 @@
 import { expect, it, beforeAll, afterAll, describe, beforeEach } from 'vitest'
 import request from 'supertest'
 import { execSync } from 'node:child_process'
-import jwt from 'jsonwebtoken';
-import { env } from '../src/env';
+import jwt from 'jsonwebtoken'
+import { env } from '../src/env'
 
 import { app } from '../src/app'
 
-
 const SECRET_KEY = env.JWT_SECRET
-const USER_ID = '6b75fe8a-9b30-41a4-bc70-12e44f812af9';
+const USER_ID = '6b75fe8a-9b30-41a4-bc70-12e44f812af9'
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, SECRET_KEY, { expiresIn: '1h' })
 }
 
 describe('Meals routes', () => {
-  let token;
-  
+  let token
+
   beforeAll(async () => {
     await app.ready()
     token = generateToken(USER_ID)
@@ -43,8 +42,7 @@ describe('Meals routes', () => {
       })
       .expect(201)
 
-      // dar uma olhadinha nesse
-
+    // dar uma olhadinha nesse
   })
 
   it('should be able to list all meals', async () => {
@@ -69,7 +67,6 @@ describe('Meals routes', () => {
         description: 'Meal description',
         mealDate: '2024-10-22 22:37:00',
         isInDiet: 1,
-
       }),
     ])
   })
@@ -103,7 +100,7 @@ describe('Meals routes', () => {
         description: 'Meal description',
         mealDate: '2024-10-22 22:37:00',
         isInDiet: 1,
-      })
+      }),
     )
   })
 

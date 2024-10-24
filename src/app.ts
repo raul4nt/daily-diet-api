@@ -8,11 +8,11 @@ export const app = fastify()
 
 app.register(cookie)
 app.register(mealsRoutes, {
-    prefix: 'meals',
+  prefix: 'meals',
 })
 app.register(usersRoutes, {
-    prefix: 'users',
+  prefix: 'users',
 })
 app.register(sessionsRoutes, {
-    prefix: 'sessions'
+  prefix: 'sessions',
 })

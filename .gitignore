@@ -3,7 +3,7 @@ node_modules
 
 #Database
 db/app.db
-db/app.db
+db/test.db
 # poderia usar db/*.db também
 
 # Environment

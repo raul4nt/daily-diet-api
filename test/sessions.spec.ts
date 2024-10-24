@@ -7,7 +7,6 @@ import { env } from '../src/env'
 import { app } from '../src/app'
 
 describe('Sessions routes', () => {
-
   beforeAll(async () => {
     await app.ready()
   })
@@ -22,10 +21,9 @@ describe('Sessions routes', () => {
   })
 
   it('should be able to authenticate a user', async () => {
-    
     await request(app.server)
       .post('/users')
-    //   .set('Authorization', `Bearer ${token}`)
+      //   .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'New user',
         email: 'newuser@mail.com',
@@ -37,10 +35,8 @@ describe('Sessions routes', () => {
       .post('/sessions/login')
       .send({
         email: 'newuser@mail.com',
-        password: 'newuser123'
+        password: 'newuser123',
       })
       .expect(200)
-
   })
 })
-
